@@ -11,6 +11,8 @@ class RateFetcher(object):
 		self._redis = redis
 
 	def get_rate(self, currency):
+		self._redis.incr('fx:meta:requests')
+		self._redis.incr('fx:meta:currency_requests:' + currency)
 		result = ''
 		result = self._redis.get('fx:USD:' + currency)
 		if not result:
@@ -20,6 +22,7 @@ class RateFetcher(object):
 
 	def _update_rates(self):
 		print 'Updating Rates'
+		self._redis.incr('fx:meta:network_requests')
 		url = 'https://openexchangerates.org/api/latest.json?app_id=%s' % (KEY)
 		try:
 		  r = requests.get(url, timeout=1)
