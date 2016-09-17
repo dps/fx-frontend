@@ -14,7 +14,6 @@ class RegexConverter(BaseConverter):
 
 app = Flask(__name__)
 app.url_map.converters['regex'] = RegexConverter
-app.debug = True
 
 appredis = None
 ratefetcher = None
